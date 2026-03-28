@@ -33,10 +33,11 @@ new #[Layout('layouts::app', ['title' => 'Create post'])] class extends Componen
         <flux:textarea wire:model="content" label="Content" />
 
         <div class="flex justify-end">
-            <button type="submit"
-                class="data-loading:opacity-50 realtive inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium text-sm h-10 rounded-lg ps-4 pe-4 bg-zinc-800 text-white border border-black/10 hover:bg-zinc-700 dark:bg-white dark:text-zinc-800 dark:hover:bg-zinc-200 cursor-pointer">
+            <button
+                type="submit"
+                class="data-loading:opacity-50 relative inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium text-sm h-10 rounded-lg ps-4 pe-4 bg-zinc-800 text-white border border-black/10 hover:bg-zinc-700 dark:bg-white dark:text-zinc-800 dark:hover:bg-zinc-200 cursor-pointer"
+            >
                 Create Post
-
                 <flux:icon.loading variant="micro" class="not-in-data-loading:hidden" />
             </button>
         </div>
