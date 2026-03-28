@@ -14,6 +14,8 @@ use Tests\TestCase;
 |
 */
 
+pest()->browser()->headed();
+
 pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature');

@@ -13,11 +13,12 @@ test('example', function (): void {
         'content' => 'Test content',
     ]);
 
-    Livewire::test('pages::post.create')
-        ->set('title', 'Alternative Post')
-        ->set('content', 'Test content')
-        ->call('save')
-        ->assertRedirect('/post/create');
+    Livewire::visit('pages::post.create')
+        ->type('[wire\:model="title"]', 'Alternative Post')
+        ->type('[wire\:model="content"]', 'Test content')
+        // ->debug()
+        ->press('Save post')
+        ->assertPathIs('/post/create');
 
     assertDatabaseHas(Post::class, [
         'title' => 'Alternative Post',
