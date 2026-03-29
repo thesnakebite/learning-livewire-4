@@ -1,23 +1,31 @@
 <?php
 
+use App\Enums\PostStatus;
 use App\Models\Post;
-use Livewire\Component;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 new #[Layout('layouts::app', ['title' => 'Create post'])] class extends Component {
     public string $title = '';
     public string $content = '';
+    public PostStatus $selectedStatus = PostStatus::Draft;
 
     public function save(): void
     {
         \Illuminate\Support\Sleep::sleep(1);
 
-        Post::create(
-            $this->validate([
-                'title' => 'required|min:3',
-                'content' => 'required',
-            ]),
-        );
+        $validated = $this->validate([
+            'title' => 'required|min:3',
+            'content' => 'required',
+            'selectedStatus' => ['required', Rule::enum(PostStatus::class)],
+        ]);
+
+        Post::create([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'status' => $validated['selectedStatus'],
+        ]);
 
         $this->redirect('/post/create');
     }
@@ -31,6 +39,17 @@ new #[Layout('layouts::app', ['title' => 'Create post'])] class extends Componen
         <flux:input wire:model="title" label="Title" />
 
         <flux:textarea wire:model="content" label="Content" />
+
+        <flux:radio.group wire:model="selectedStatus" label="Status" variant="cards" class="max-sm:flex-col">
+            @foreach (PostStatus::cases() as $status)
+                <flux:radio
+                    value="{{ $status->value }}"
+                    icon="{{ $status->icon() }}"
+                    label="{{ $status->label() }}"
+                    description="{{ $status->description() }}"
+                />
+            @endforeach
+        </flux:radio.group>
 
         <div class="flex justify-end">
             <button
