@@ -8,7 +8,7 @@ use App\Enums\PostStatus;
 
 new #[Title('Posts')] class extends Component {
     public string $sort = 'newest';
-    public PostStatus $selectedStatus = PostStatus::Draft;
+    //  public PostStatus $selectedStatus = PostStatus::Draft;
 
     #[Computed]
     public function posts()
@@ -60,13 +60,20 @@ new #[Title('Posts')] class extends Component {
     </div>
 
     <div class="mt-8 grid grid-cols-3 gap-6 [*:has([data-dim-sorting][data-loading])_&]:opacity-50">
-        @foreach ($this->posts as $post)
+        @forelse ($this->posts as $post)
             <livewire:card
                 :$post
                 :wire:key="$post->id"
                 :lazy.bundle="$loop->iteration > 6"
+                :class="$post->status === PostStatus::Draft ? 'border-dashed border-zinc-300!' : 'border-zinc-400!'"
             />
-        @endforeach
+
+        @empty
+            <div class="col-span-3 text-center py-28">
+                <flux:heading>No posts yet</flux:heading>
+                <flux:text class="mt-2">Create your first post to get started.</flux:text>
+            </div>
+        @endforelse
     </div>
 </div>
 

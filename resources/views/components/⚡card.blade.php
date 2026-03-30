@@ -18,7 +18,10 @@ new class extends Component
     <flux:skeleton class="min-h-56 rounded-lg" animate="shimmer" />
 @endplaceholder
 
-<flux:card class="flex flex-col justify-between p-4 rounded-lg" variant="filled">
+<flux:card
+    {{ $attributes->class('flex flex-col justify-between p-4 rounded-lg') }}
+    variant="filled"
+>
     <div>
         <flux:heading size="lg">{{ $post->title }}</flux:heading>
         <flux:text class="mt-1 text-xs text-zinc-500">{{ $post->created_at->format('M d, Y') }}</flux:text>
