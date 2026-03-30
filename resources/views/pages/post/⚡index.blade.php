@@ -3,11 +3,10 @@
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Lazy;
 use App\Models\Post;
 use App\Enums\PostStatus;
 
-new #[Lazy, Title('Posts')] class extends Component {
+new #[Title('Posts')] class extends Component {
     public string $sort = 'newest';
     public PostStatus $selectedStatus = PostStatus::Draft;
 
@@ -34,12 +33,6 @@ new #[Lazy, Title('Posts')] class extends Component {
 };
 ?>
 
-@placeholder
-    <div class="flex items-center justify-center h-screen py-20">
-        <flux:icon.loading class="size-8 text-zinc-400" />
-    </div>
-@endplaceholder
-
 <div class="max-w-5xl">
     <div class="flex items-center justify-between">
         {{-- Heading --}}
@@ -55,7 +48,7 @@ new #[Lazy, Title('Posts')] class extends Component {
 
                 <flux:select size="sm" wire:model.live="sort" data-dim-sorting>
                     <option value="newest">Newset</option>
-                    <option value="oldset">Oldest</option>
+                    <option value="oldest">Oldest</option>
                     <option value="popular">Most popular</option>
                 </flux:select>
             </div>
@@ -68,26 +61,11 @@ new #[Lazy, Title('Posts')] class extends Component {
 
     <div class="mt-8 grid grid-cols-3 gap-6 [*:has([data-dim-sorting][data-loading])_&]:opacity-50">
         @foreach ($this->posts as $post)
-            <flux:card class="flex flex-col justify-between p-4 rounded-lg" variant="filled">
-                <div>
-                    <flux:heading size="lg">{{ $post->title }}</flux:heading>
-                    <flux:text class="mt-1 text-xs text-zinc-500">{{ $post->created_at->format('M d, Y') }}</flux:text>
-                    <flux:text class="mt-4 line-clamp-3">{{ $post->content }}</flux:text>
-                </div>
-
-                <div class="mt-6 flex justify-between">
-                    <div class="flex items-center">
-                            <flux:badge
-                                rounded
-                                size="sm"
-                                color="{{ $post->status->color() }}"
-                                icon="{{ $post->status->icon() }}"
-                            >
-                                {{ $post->status->label() }}
-                            </flux:badge>
-                    </div>
-                </div>
-            </flux:card>
+            <livewire:card
+                :$post
+                :wire:key="$post->id"
+                :lazy.bundle="$loop->iteration > 6"
+            />
         @endforeach
     </div>
 </div>
