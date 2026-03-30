@@ -3,10 +3,11 @@
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Lazy;
 use App\Models\Post;
 use App\Enums\PostStatus;
 
-new #[Title('Posts')] class extends Component {
+new #[Lazy, Title('Posts')] class extends Component {
     public string $sort = 'newest';
     public PostStatus $selectedStatus = PostStatus::Draft;
 
@@ -32,6 +33,12 @@ new #[Title('Posts')] class extends Component {
     }
 };
 ?>
+
+@placeholder
+    <div class="flex items-center justify-center h-screen py-20">
+        <flux:icon.loading class="size-8 text-zinc-400" />
+    </div>
+@endplaceholder
 
 <div class="max-w-5xl">
     <div class="flex items-center justify-between">

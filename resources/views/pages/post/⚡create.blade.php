@@ -27,7 +27,7 @@ new #[Layout('layouts::app', ['title' => 'Create post'])] class extends Componen
             'status' => $validated['selectedStatus'],
         ]);
 
-        $this->redirect('/post/create');
+        $this->redirect('/post');
     }
 };
 ?>
