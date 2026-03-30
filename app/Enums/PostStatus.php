@@ -18,8 +18,8 @@ enum PostStatus: string
     public function color(): string
     {
         return match ($this) {
-            self::Draft => 'gray',
-            self::Published => 'green',
+            self::Draft => 'zinc',
+            self::Published => 'lime',
         };
     }
 
