@@ -52,4 +52,4 @@ jobs:
         run: npm run build
 
       - name: Run Tests
-        run: ./vendor/bin/pest
+        run: xvfb-run ./vendor/bin/pest
