@@ -6,7 +6,7 @@ use App\Enums\PostStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['title', 'content', 'status'])]
+#[Fillable(['title', 'content', 'status', 'views'])]
 class Post extends Model
 {
     #[\Override]
