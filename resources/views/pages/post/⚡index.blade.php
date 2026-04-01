@@ -8,6 +8,7 @@ use App\Enums\PostStatus;
 
 new #[Title('Posts')] class extends Component {
     public string $sort = 'newest';
+    public $selected = [];
     //  public PostStatus $selectedStatus = PostStatus::Draft;
 
     #[Computed]
@@ -26,9 +27,11 @@ new #[Title('Posts')] class extends Component {
             ->get();
     }
 
-    public function delete(Post $post)
+    public function deleteSelected()
     {
-        $post->delete();
+        Post::whereIn('id', $this->selected)->delete();
+
+        $this->selected = [];
     }
 };
 ?>
@@ -43,11 +46,22 @@ new #[Title('Posts')] class extends Component {
 
         {{-- Filter --}}
         <div class="flex gap-2">
+            @if (count($this->selected) > 0)
+                <div class="max-lg:hidden flex justify-start items-center gap-2.5">
+                    <flux:subheading class="whitespace-nowrap">
+                        <span>{{ count($this->selected) }}</span>
+                        selected:
+                    </flux:subheading>
+
+                    <flux:button size="sm" variant="danger" icon="trash" wire:click="deleteSelected">Selected</flux:button>
+                </div>
+            @endif
+
             <div class="max-lg:hidden flex justify-start items-center gap-2">
                 <flux:subheading class="whitespace-nowrap">Sort by:</flux:subheading>
 
                 <flux:select size="sm" wire:model.live="sort" data-dim-sorting>
-                    <option value="newest">Newset</option>
+                    <option value="newest">Newest</option>
                     <option value="oldest">Oldest</option>
                     <option value="popular">Most popular</option>
                 </flux:select>
@@ -59,15 +73,18 @@ new #[Title('Posts')] class extends Component {
         </div>
     </div>
 
-    <div class="mt-8 grid grid-cols-3 gap-6 [*:has([data-dim-sorting][data-loading])_&]:opacity-50">
+    <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 [*:has([data-dim-sorting][data-loading])_&]:opacity-50">
         @forelse ($this->posts as $post)
             <livewire:card
                 :$post
                 :wire:key="$post->id"
                 :lazy.bundle="$loop->iteration > 6"
                 :class="$post->status === PostStatus::Draft ? 'border-dashed border-zinc-300!' : 'border-zinc-400!'"
-            />
-
+            >
+                <livewire:slot name="checkbox">
+                    <flux:checkbox wire:model.live="selected" :value="$post->id" />
+                </livewire:slot>
+            </livewire:card>
         @empty
             <div class="col-span-3 text-center py-28">
                 <flux:heading>No posts yet</flux:heading>
