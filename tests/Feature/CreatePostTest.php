@@ -20,7 +20,7 @@ test('can create a post', function (): void {
         ->set('content', 'Test content')
         ->set('selectedStatus', PostStatus::Draft)
         ->call('save')
-        ->assertRedirect('/post/create');
+        ->assertRedirect('/post');
 
     assertDatabaseHas(Post::class, [
         'title' => 'Alternative Post',
