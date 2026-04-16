@@ -25,6 +25,7 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
+                <flux:sidebar.item icon="chart-bar" href="/analytics" wire:navigate>Analytics</flux:sidebar.item>
                 <flux:sidebar.item icon="document-text" href="/post" wire:navigate>Posts</flux:sidebar.item>
                 <flux:sidebar.item icon="plus" href="/post/create" wire:navigate>Create Post</flux:sidebar.item>
                 <flux:sidebar.item icon="calendar" href="#">Calendar</flux:sidebar.item>
